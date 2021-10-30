@@ -28,7 +28,7 @@ h4,p{
 
 .bg {
 	/* The image used */
-	background-image: url('./assets/main-bg.jpg');
+	background-image: url('/assets/main-bg.jpg');
 	/* Full height */
 	height: 100%;
 	/* Center and scale the image nicely */
@@ -92,7 +92,7 @@ nav {
 /* Games Page */
 .bg-games{
     /* The image used */
-	background-image: url('./assets/the-games-bg.jpg') ;
+	background-image: url('/assets/the-games-bg.jpg') ;
 	/* Full height */
 	height: 100%;
     
@@ -237,7 +237,7 @@ input:not(:focus):valid ~ .floating-label {
 /* Ranks Page */
 .bg-ranks{
     /* The image used */
-	background-image: url('./assets/rank.jfif');
+	background-image: url('/assets/rank.jfif');
 	/* Full height */
 	height: 100%;
     
@@ -293,7 +293,7 @@ input:not(:focus):valid ~ .floating-label {
 /* Feature Page */
 .bg-feature{
     /* The image used */
-	background-image: url('./assets/features.jpg') ;
+	background-image: url('/assets/features.jpg') ;
 	/* Full height */
 	height: 100%;
     
@@ -464,7 +464,7 @@ input:not(:focus):valid ~ .floating-label {
   /* Feature Page */
 .bg-topscore{
     /* The image used */
-	background-image: url('./assets/rank.jfif') ;
+	background-image: url('/assets/rank.jfif') ;
 	/* Full height */
 	height: 100%;
     
