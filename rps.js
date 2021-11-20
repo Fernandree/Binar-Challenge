@@ -120,6 +120,7 @@ s1.addEventListener("click", event =>{
         sc1.classList.remove('active');
         p1.classList.remove('active');
         choose1 = 'batu';
+        console.log("Player 1 Memilih " + choose1 );
         setTimeout(() => {
             check();
         }, 1500);
@@ -142,6 +143,7 @@ sc1.addEventListener("click", event =>{
         s1.classList.remove('active');
         p1.classList.remove('active');
         choose1 = 'gunting';
+        console.log("Player 1 Memilih " + choose1 );
         setTimeout(() => {
             check();
         }, 1500);
@@ -165,6 +167,7 @@ p1.addEventListener("click", event =>{
         sc1.classList.remove('active');
         s1.classList.remove('active');
         choose1 = 'kertas';
+        console.log("Player 1 Memilih " + choose1 );
         setTimeout(() => {
             check();
         }, 1500);
@@ -186,7 +189,7 @@ p1.addEventListener("click", event =>{
 const check = () =>{
     let arr = ['batu','gunting','kertas'];
     let cpu = arr[Math.floor(Math.random()*arr.length)];
-
+    console.log("CPU memilih " + cpu);
     if(choose1 == 'batu' && cpu == 'batu'){
         s2.classList.add('active');
         console.log('SERI');
