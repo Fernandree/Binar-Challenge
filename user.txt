@@ -1,0 +1,1 @@
+{"email":"fernandre@nusatalent.com","password":"andre"}{"email":"mina@jype.com","password":"mina"}
