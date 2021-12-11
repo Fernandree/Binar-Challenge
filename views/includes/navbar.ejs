@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark bg-transparent">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark bg-transparent" style="position: fixed; top:0;">
     <a class="navbar-brand" href="/">
         <img src="images/assets/logo.png" alt="Logo Binar" class="logo" />
     </a>
@@ -15,14 +15,14 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
         <div class="navbar-nav">
-            <a class="nav-item nav-link" href="/">Home</a>
-            <a class="nav-item nav-link" href="/requirements">Requirements</a>
-            <a class="nav-item nav-link" href="/features">Features</a>
-            <a class="nav-item nav-link" href="/ranks">Ranks</a>
-            <a class="nav-item nav-link active" href="/aboutus">About Us</a>
-            <a class="nav-item nav-link" href="/subscribe">Subscribe</a>
-            <a class="nav-item nav-link" href="/login">Login</a>
-            <a class="nav-item nav-link" href="/register">Sign Up</a>
+            <a class="nav-item nav-link <%if (page === 'home'){ %> active <% } %>" href="/">Home</a>
+            <a class="nav-item nav-link <%if (page === 'requirements') { %> active <% } %>" href="/requirements">Requirements</a>
+            <a class="nav-item nav-link <%if (page === 'features') { %> active <% } %>" href="/features">Features</a>
+            <a class="nav-item nav-link <%if (page === 'ranks') { %> active <% } %>" href="/ranks">Ranks</a>
+            <a class="nav-item nav-link <%if (page === 'aboutus') { %> active <% } %>" href="/aboutus">About Us</a>
+            <a class="nav-item nav-link <%if (page === 'subscribe') { %> active <% } %>" href="/subscribe">Subscribe</a>
+            <a class="nav-item nav-link <%if (page === 'login') { %> active <% } %>" href="/login">Login</a>
+            <a class="nav-item nav-link <%if (page === 'register') { %> active <% } %>" href="/register">Sign Up</a>
         </div>
     </div>
 </nav>

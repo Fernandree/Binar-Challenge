@@ -1,112 +1,98 @@
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <%- include('../includes/style.ejs'); %>
-        <title>Register</title>
+<style>
+    .login,
+    .image {
+        min-height: 100vh;
+    }
 
-        <style>
-            .login,
-            .image {
-                min-height: 100vh;
-            }
+    .bg-image {
+        background-image: url("https://wallpaperaccess.com/full/2890506.jpg");
+        background-size: cover;
+        background-position: center center;
+    }
+</style>
+<%- include('../includes/navbar.ejs',{page: 'register'}); %>  
+<div class="container-fluid">
+    <div class="row no-gutter">
+        <!-- The image half -->
+        <div class="col-md-6 d-none d-md-flex bg-image"></div>
 
-            .bg-image {
-                background-image: url("https://wallpaperaccess.com/full/2890506.jpg");
-                background-size: cover;
-                background-position: center center;
-            }
-        </style>
-    </head>
-    <body>
-        <%- include('../includes/navbar.ejs'); %>
-        <div class="container-fluid">
-            <div class="row no-gutter">
-                <!-- The image half -->
-                <div class="col-md-6 d-none d-md-flex bg-image"></div>
-
-                <!-- The content half -->
-                <div class="col-md-6 bg-light">
-                    <div class="login d-flex align-items-center py-5">
-                        <!-- Demo content-->
-                        <div class="container">
-                            <div class="row">
-                                <div class="col-lg-10 col-xl-7 mx-auto">
-                                    <h3 class="display-4">Register</h3>
-                                    <p class="text-muted mb-4">
-                                        Enter your credentials
-                                    </p>
-                                    <form action="/register-data" method="post">
-                                        <div class="form-group mb-3">
-                                            <input
-                                                name="email"
-                                                id="inputEmail"
-                                                type="email"
-                                                placeholder="Email address"
-                                                required=""
-                                                autofocus=""
-                                                class="
-                                                    form-control
-                                                    rounded-pill
-                                                    border-0
-                                                    shadow-sm
-                                                    px-4
-                                                "
-                                            />
-                                        </div>
-                                        <div class="form-group mb-3">
-                                            <input
-                                                name="password"
-                                                id="inputPassword"
-                                                type="password"
-                                                placeholder="Password"
-                                                required=""
-                                                class="
-                                                    form-control
-                                                    rounded-pill
-                                                    border-0
-                                                    shadow-sm
-                                                    px-4
-                                                    text-primary
-                                                "
-                                            />
-                                        </div>
-
-                                        <button
-                                            type="submit"
-                                            class="
-                                                btn btn-primary btn-block
-                                                text-uppercase
-                                                mb-2
-                                                rounded-pill
-                                                shadow-sm
-                                            "
-                                        >
-                                            Signup
-                                        </button>
-                                        <a
-                                            href="/login"
-                                            class="
-                                                btn btn-warning btn-block
-                                                text-uppercase
-                                                mb-2
-                                                rounded-pill
-                                                shadow-sm
-                                            "
-                                            >Already have an Account? Sign In</a
-                                        >
-                                    </form>
+        <!-- The content half -->
+        <div class="col-md-6 bg-light">
+            <div class="login d-flex align-items-center py-5">
+                <!-- Demo content-->
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-10 col-xl-7 mx-auto">
+                            <h3 class="display-4">Register</h3>
+                            <p class="text-muted mb-4">
+                                Enter your credentials
+                            </p>
+                            <form action="/register-data" method="post">
+                                <div class="form-group mb-3">
+                                    <input
+                                        name="email"
+                                        id="inputEmail"
+                                        type="email"
+                                        placeholder="Email address"
+                                        required=""
+                                        autofocus=""
+                                        class="
+                                            form-control
+                                            rounded-pill
+                                            border-0
+                                            shadow-sm
+                                            px-4
+                                        "
+                                    />
                                 </div>
-                            </div>
+                                <div class="form-group mb-3">
+                                    <input
+                                        name="password"
+                                        id="inputPassword"
+                                        type="password"
+                                        placeholder="Password"
+                                        required=""
+                                        class="
+                                            form-control
+                                            rounded-pill
+                                            border-0
+                                            shadow-sm
+                                            px-4
+                                            text-primary
+                                        "
+                                    />
+                                </div>
+
+                                <button
+                                    type="submit"
+                                    class="
+                                        btn btn-primary btn-block
+                                        text-uppercase
+                                        mb-2
+                                        rounded-pill
+                                        shadow-sm
+                                    "
+                                >
+                                    Signup
+                                </button>
+                                <a
+                                    href="/login"
+                                    class="
+                                        btn btn-warning btn-block
+                                        text-uppercase
+                                        mb-2
+                                        rounded-pill
+                                        shadow-sm
+                                    "
+                                    >Already have an Account? Sign In</a
+                                >
+                            </form>
                         </div>
-                        <!-- End -->
                     </div>
                 </div>
                 <!-- End -->
             </div>
         </div>
-        <%- include('../includes/script.ejs'); %>
-    </body>
-</html>
+        <!-- End -->
+    </div>
+</div>

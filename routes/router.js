@@ -3,6 +3,7 @@ var app = express();
 var router = express.Router();
 const path = require("path");
 const fs = require("fs");
+let users = require("../user.json");
 
 router.get("/", (req, res) => {
     res.render("pages/index");
@@ -41,7 +42,7 @@ router.get("/forgetpassword", (req, res) => {
 });
 
 router.get("/rps", (req, res) => {
-    res.render("pages/rps");
+    res.render("pages/rps", {page: "rps"});
 });
 
 router.get("/valorant", (req, res) => {
@@ -103,36 +104,55 @@ router.post("/register-data", (req, res) => {
 });
 
 router.post("/login-data", (req, res) => {
-    fs.readFile("user.txt", "utf-8", (err, data) => {
-        if (data.includes(JSON.stringify(req.body))) {
-            res.json({
-                status: 200,
-                message: "Login Success!",
-            });
-        } else {
-            res.json({
-                status: 400,
-                message: "User not found! Please check your credentials!",
-            });
-        }
-    });
+    const user = users.find((item) => item.email === req.body.email && item.password === req.body.password);
+    if(user) return res.render('pages/thankyou' , {message : 'Welcome! Please Enjoy'});
+    res.send({
+        status : 404,
+        message: "Credentials Not Found!"
+    })
 });
 
-router.get("/get-data", (req, res) => {
-    fs.readFile("user.json", "utf-8", (err, data) => {
-        let tes = JSON.parse(data);
-        res.json(tes);
-    });
+router.get("/get-data", (req, res) => {     
+    res.json(users);
 });
 
 router.get("/get-data/:id", (req, res) => {
-    fs.readFile("user.json", "utf-8", (err, data) => {
-        data = JSON.parse(data);
-        data.forEach((e) => {
-            if (e.id == req.params.id) {
-                res.send(e);
-            }
+    const user = users.find((e) => e.id == req.params.id) 
+    if(user) return res.send(user);
+    res.json({
+        status  : 404,
+        message : "User not found!",
+    })
+});
+
+router.put("/update-data/:id", (req, res) => {
+    let user = users.find((e) => e.id == req.params.id) 
+    let params = {email : req.body.email, password : req.body.password}
+    user = { ...user, ...params };
+    users = users.map((i) => (i.id === user.id ? user : i));
+    res.status(200).json(user);
+});
+
+router.delete("/delete-data/:id", (req, res) => {
+    let user = users.find((e) => e.id == req.params.id) 
+    if(user) {
+        users = users.filter(function(data) {
+            return data.id != req.params.id;
         });
+    }
+    data = JSON.stringify(users);
+    fs.writeFile("user.json", data, "utf8", (err, result) => {
+        if (err) {
+            res.json({
+                status: 400,
+                message: "Failed to delete a user!",
+            });
+        } else {
+            res.json({
+                status: 200,
+                message: "You have deleted a user!",
+            });
+        }
     });
 });
 
