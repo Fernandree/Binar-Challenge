@@ -1,0 +1,33 @@
+<%- include('../includes/navbar.ejs',{page: 'aboutus'}); %>
+<div class="row" style="margin: 0px !important; padding-top: 50px">
+    <div class="col-md-12">
+        <h4 align="center">Kategori</h4>
+        <a href="/umum/kategori/add"><button class="btn btn-primary">Tambah</button></a>
+        <br />
+        <br />
+        <table class="table" id="tabel_kategori">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Player</th>
+                    <th>Score</th>
+                    <th>Records</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% var no = 1; for(var i = 0; i < article.length; i++){ %>
+                <tr>
+                    <th scope="row"><%= no++ %></th>
+                    <td><%= article[i].title %></td>
+                    <td><%= article[i].body %></td>
+                    <td><%= article[i].createdAt %></td>
+                    <td>
+                        <a href="/umum/article/edit/<%= article[i].id %>"><i class="fa fa-pencil-square-o"></i></a> <a href="umum/kategori/delete/<%= article[i].id %>" onclick='return confirm("Apa kamu yakin akan menghapus data ini?")'><i class="fa fa-trash"></i></a>
+                    </td>
+                </tr>
+                <% } %>
+            </tbody>
+        </table>
+    </div>
+</div>
