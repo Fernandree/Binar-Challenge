@@ -1,56 +1,97 @@
 var express = require("express");
-var app = express();
+//var app = express();
 var router = express.Router();
-const path = require("path");
+//const path = require("path");
 const fs = require("fs");
 let users = require("../user.json");
+var auth = require("../auth")
+var md5 = require("md5");
+const { User_admin, User_game, Article } = require("../models")
 
-router.get("/", (req, res) => {
-    res.render("pages/index");
+router.get('/logout',(req,res) => {
+    req.session.destroy();
+    res.redirect('/login');
+});
+
+router.get("/", auth.isAuthorized, (req, res) => {
+    res.render("pages/static/index");
 });
 
 router.get("/requirements", (req, res) => {
-    res.render("pages/requirement");
+    res.render("pages/static/requirement");
 });
 
 router.get("/features", (req, res) => {
-    res.render("pages/features");
+    res.render("pages/static/features");
 });
 
 router.get("/ranks", (req, res) => {
-    res.render("pages/ranks");
+    res.render("pages/static/ranks");
 });
 
 router.get("/aboutus", (req, res) => {
-    res.render("pages/aboutus");
+    res.render("pages/static/aboutus");
 });
 
 router.get("/subscribe", (req, res) => {
-    res.render("pages/subscribe");
+    res.render("pages/static/subscribe");
 });
 
 router.get("/login", (req, res) => {
-    res.render("pages/login");
+    res.render("pages/static/login");
+});
+
+router.post("/login_admin", (req, res) => {
+    if (!req.body.username || !req.body.password) {
+        res.status(404).json({
+            message: "username and password are needed!",
+        });
+    } else {
+        const username = req.body.username;
+        const password = req.body.password;
+        const admin = {
+            where: {
+                username,
+            },
+        };
+        User_admin.findOne(admin)
+            .then((user) => {
+                if (!user) {
+                    res.redirect("back");
+                } else if (user.password !== md5(password)) {
+                   
+                    res.redirect("back");
+                } else {
+                    req.session.userId = user.id
+                    res.redirect("user_game/dashboard");
+                }
+            })
+            // .catch(() => {
+            //     res.status(500).json({
+            //         message: "There was an error!",
+            //     });
+            // });
+    }
 });
 
 router.get("/register", (req, res) => {
-    res.render("pages/register");
+    res.render("pages/static/register");
 });
 
 router.get("/forgetpassword", (req, res) => {
-    res.render("pages/forgetpassword");
+    res.render("pages/static/forgetpassword");
 });
 
 router.get("/rps", (req, res) => {
-    res.render("pages/rps", {page: "rps"});
+    res.render("pages/static/rps", {page: "rps"});
 });
 
 router.get("/valorant", (req, res) => {
-    res.render("pages/valorant");
+    res.render("pages/static/valorant");
 });
 
 router.get("/games", (req, res) => {
-    res.render("pages/games");
+    res.render("pages/static/games");
 });
 
 router.post("/register-data", (req, res) => {
@@ -105,7 +146,7 @@ router.post("/register-data", (req, res) => {
 
 router.post("/login-data", (req, res) => {
     const user = users.find((item) => item.email === req.body.email && item.password === req.body.password);
-    if(user) return res.render('pages/thankyou' , {message : 'Welcome! Please Enjoy'});
+    if(user) return res.render('pages/static/thankyou' , {message : 'Welcome! Please Enjoy'});
     res.send({
         status : 404,
         message: "Credentials Not Found!"

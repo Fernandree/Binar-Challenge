@@ -1,48 +1,61 @@
 var express = require("express");
 var router = express.Router();
-var md5 = require("md5");
+var auth = require("../auth")
 
 const { User_admin, User_game, Article } = require("../models");
 
-router.post("/login_admin", (req, res) => {
-    if (!req.body.username || !req.body.password) {
-        res.status(404).json({
-            message: "username and password are needed!",
-        });
-    } else {
-        const username = req.body.username;
-        const password = req.body.password;
-        const admin = {
-            where: {
-                username,
-            },
-        };
-        User_admin.findOne(admin)
-            .then((user) => {
-                if (!user) {
-                    res.status(404).json({
-                        message: "Authentication failed!",
-                    });
-                } else if (user.password !== md5(password)) {
-                    res.status(404).json({
-                        message: "Password incorrect!",
-                    });
-                } else {
-                    res.redirect("/");
-                }
-            })
-            .catch(() => {
-                res.status(500).json({
-                    message: "There was an error!",
-                });
-            });
-    }
-});
-
-router.get("/dashboard", (req, res) => {
+router.get("/dashboard", auth.isAuthorized, (req, res) => {
+    sess = req.session;
+    console.log(sess);
+    
     Article.findAll().then((article) => {
-        res.render("pages/dashboard", { article: article });
+        res.render("pages/admin/dashboard", { article: article, user : sess });
     });
 });
+
+router.post("/add", auth.isAuthorized, (req,res) => {
+    return Article.create({
+        title : req.body.player,
+        body : req.body.score,
+    }).then(function (users) {
+        if (users) {
+            res.redirect("/user_game/dashboard")
+        } else {
+            response.status(400).send('Error in insert new record');
+        }
+    });
+})
+
+router.get("/edit_user/:id", auth.isAuthorized, (req, res) => {
+    sess = req.session;
+    Article.findByPk(req.params.id).then((article) => {
+        res.render("pages/admin/edit_user", { article: article, user : sess });
+    });
+});
+
+router.post("/update", auth.isAuthorized, (req,res) => {
+    return Article.update({
+        title : req.body.player,
+        body : req.body.score,
+    },{where: {id : req.body.id}}).then(function (users) {
+        if (users) {
+            res.redirect("/user_game/dashboard")
+        } else {
+            response.status(400).send('Error in updating a record');
+        }
+    });
+})
+
+router.get("/delete/:id", auth.isAuthorized, (req,res) => {
+    return Article.destroy({
+        where : {id : req.params.id}
+    }).then(function (users) {
+        if (users) {
+            res.redirect("/user_game/dashboard")
+        } else {
+            response.status(400).send('Error in deleting a record');
+        }
+    });
+})
 
 module.exports = router;

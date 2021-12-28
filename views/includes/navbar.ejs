@@ -13,8 +13,12 @@
             <a class="nav-item nav-link <%if (page === 'ranks') { %> active <% } %>" href="/ranks">Ranks</a>
             <a class="nav-item nav-link <%if (page === 'aboutus') { %> active <% } %>" href="/aboutus">About Us</a>
             <a class="nav-item nav-link <%if (page === 'subscribe') { %> active <% } %>" href="/subscribe">Subscribe</a>
+            <% if(typeof user !== "undefined" && user) { %>
+            <a class="nav-item nav-link <%if (page === 'register') { %> active <% } %>" href="/logout">Logout</a>
+            <% } else { %>
             <a class="nav-item nav-link <%if (page === 'login') { %> active <% } %>" href="/login">Login</a>
             <a class="nav-item nav-link <%if (page === 'register') { %> active <% } %>" href="/register">Sign Up</a>
+            <% } %>
         </div>
     </div>
 </nav>

@@ -1,0 +1,76 @@
+<style>
+    body {
+        /* The image used */
+        background-image: url("images/assets/v748-toon-131.jpg");
+        /* Full height */
+        /* height: 100%; */
+
+        /* Center and scale the image nicely */
+        background-position: top;
+        background-repeat: no-repeat;
+        background-size: cover;
+    }
+</style>
+<%- include('../../includes/navbar.ejs',{page: 'subscribe'}); %>
+<div class="bg-subscribe container-fluid">
+    <div class="row">
+        <div class="col-md-4"></div>
+        <div class="col-md-4" style="margin-top: 100px">
+            <h4 class="h4-subs">Want to stay in touch?</h4>
+            <h1 class="h1-subs">NEWSLETTER</h1>
+            <h1 class="h1-subs">SUBSCRIBE</h1>
+            <p class="p-subs">
+                In order to start receiving our news, all you have to do is enter your email address. Everything else will be taken care of by us. We will send you emails containing information about
+                game. We don't spam.
+            </p>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend floating-label-group">
+                    <input type="text" name="email" class="input-email form-control" autocomplete="off" autofocus required />
+                    <label class="floating-label">Your email address</label>
+
+                    <a href="#" class="btn btn-warning btn-sub">Subscribe Now</a>
+                </div>
+
+                <!-- <div class="row">
+                <div class="col-xs-4 col-xs-offset-4">
+                    <div class="floating-label-group">
+                    <input type="text" id="username" class="form-control" autocomplete="off" autofocus required />
+                        <label class="floating-label">Username</label>
+                    </div>
+                
+                    <div class="floating-label-group">
+                    <input type="password" id="password" class="form-control" autocomplete="off" required />
+                    <label class="floating-label">Password</label>
+                    </div>
+                </div>
+            </div> -->
+            </div>
+        </div>
+        <div class="col-md-4"></div>
+    </div>
+
+    <div class="footer">
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-xs-4 mb-4 mb-md-0 row-1" style="padding-bottom: 10px; border-bottom: 1px solid white">
+                <a href="/" class="nav-item ts-small">MAIN</a>
+                <a href="/aboutus" class="nav-item ts-small">ABOUT</a>
+                <a href="/features" class="nav-item ts-small">GAME FEATURES</a>
+                <a href="/requirement" class="nav-item ts-small">SYSTEM REQUIREMENTS</a>
+                <a href="/ranks" class="nav-item ts-small">QUOTES</a>
+                <!-- Facebook -->
+                <a class="btn" href="#!" role="button"><img src="images/assets/facebook.svg" /></a>
+                <!-- Twitter -->
+                <a class="btn" href="#!" role="button"><img src="images/assets/twitter.svg" /></a>
+                <!-- Youtube -->
+                <a class="btn" href="#!" role="button"><img src="images/assets/Vector.svg" /></a>
+                <!-- Twitch -->
+                <a class="btn" href="#!" role="button"><img src="images/assets/twitch.svg" /></a>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-6 col-md-6 col-xs-3 copyright" style="padding-top: 10px">© 2020 Copyright:</div>
+            <div class="col-lg-6 col-md-6 col-xs-3 privacy" style="padding-top: 10px">Privacy Policy | Terms of Service | Code of Conduct</div>
+        </div>
+    </div>
+</div>
