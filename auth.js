@@ -1,8 +1,6 @@
 const { User_admin, User_game, Article } = require("./models");
 
 module.exports.isAuthorized  = function(req, res, next) {
-
-    console.log(req.session.userId)
     User_admin.findByPk(req.session.userId).then(function (user) {
         if (!user) {
             
