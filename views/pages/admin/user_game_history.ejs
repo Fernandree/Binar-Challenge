@@ -1,0 +1,94 @@
+<%- include('../../includes/navbar-admin.ejs',{page: 'history'}); %>
+<div class="row" style="margin: 0px !important; padding-top: 50px">
+    <div class="col-md-12">
+        <h4 align="center">Kategori</h4>
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">Tambah</button>
+        <br />
+        <br />
+        <table class="table" id="tabel_kategori">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Player</th>
+                    <th>Stage</th>
+                    <th>Score</th>
+                    <th>Time</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <% var no = 1; for(var i = 0; i < history.length; i++){ %>
+                <tr>
+                    <th scope="row"><%= no++ %></th>
+                    <td><%= history[i].User_game.username %></td>
+                    <td><%= history[i].stage %></td>
+                    <td><%= history[i].score %></td>
+                    <td><%= history[i].time %> second(s)</td>
+                    <td>
+                        <a href="/user_game/history/<%= history[i].id %>"><i class="fa fa-pencil-square-o"></i></a>
+                        <a href="#" onclick="deleteData('<%= history[i].id %>')"><i class="fa fa-trash"></i></a>
+                    </td>
+                </tr>
+                <% } %>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Add New Player Record</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="/user_game/history" method="post">
+                    <div class="form-group">
+                        <label for="player">Select Player</label>
+                        <select class="form-control" id="player" name="user_id">
+                            <% for(var i = 0; i < users.length; i++){ %>
+                            <option value="<%= users[i].id %>"><%= users[i].username %></option>
+                            <% } %>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="stage" class="col-form-label">Stage</label>
+                        <input type="text" class="form-control" id="stage" name="stage" />
+                    </div>
+                    <div class="form-group">
+                        <label for="score" class="col-form-label">Score</label>
+                        <input type="text" class="form-control" id="score" name="score" />
+                    </div>
+                    <div class="form-group">
+                        <label for="time" class="col-form-label">Time (in seconds)</label>
+                        <input type="text" class="form-control" id="time" name="time" />
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Add</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function deleteData(id) {
+        if (confirm("Are you sure want to delete this data?") == true) {
+            $.ajax({
+                url: "/user_game/history/" + id,
+                type: "DELETE",
+                contentType: "application/json; charset=utf-8", // this
+                dataType: "json", // and this
+                success: function (result) {
+                    //console.log(result);
+                    window.location.href = "http://localhost:3000/user_game/history";
+                },
+            });
+        }
+    }
+</script>

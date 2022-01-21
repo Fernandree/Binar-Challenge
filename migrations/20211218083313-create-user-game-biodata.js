@@ -17,6 +17,9 @@ module.exports = {
       age: {
         type: Sequelize.INTEGER
       },
+      images: {
+        type: Sequelize.STRING
+      },
       gender: {
         type: Sequelize.ENUM('male', 'female')
       },

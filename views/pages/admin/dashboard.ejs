@@ -1,4 +1,4 @@
-<%- include('../../includes/navbar.ejs',{page: 'aboutus'}); %>
+<%- include('../../includes/navbar-admin.ejs',{page: 'article'}); %>
 <div class="row" style="margin: 0px !important; padding-top: 50px">
     <div class="col-md-12">
         <h4 align="center">Kategori</h4>
@@ -16,12 +16,12 @@
                 </tr>
             </thead>
             <tbody>
-                <% var no = 1; for(var i = 0; i < article.length; i++){ %>
+                <% var monthNames = ["Jan", "Feb", "Mar", "Apr", "May","Jun","Jul", "Aug", "Sep", "Oct", "Nov","Dec"]; %> <% var no = 1; for(var i = 0; i < article.length; i++){ %>
                 <tr>
                     <th scope="row"><%= no++ %></th>
                     <td><%= article[i].title %></td>
                     <td><%= article[i].body %></td>
-                    <td><%= article[i].createdAt %></td>
+                    <td><%= article[i].createdAt.getDate() + " " + monthNames[article[i].createdAt.getMonth()] +" "+ article[i].createdAt.getFullYear() %></td>
                     <td>
                         <a href="/user_game/edit_user/<%= article[i].id %>"><i class="fa fa-pencil-square-o"></i></a>
                         <a href="/user_game/delete/<%= article[i].id %>" onclick='return confirm("Apa kamu yakin akan menghapus data ini?")'><i class="fa fa-trash"></i></a>

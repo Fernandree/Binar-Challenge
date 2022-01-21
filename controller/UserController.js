@@ -1,4 +1,4 @@
-var UserService = require('../services/UserService')    
+var UserService = require('../services/UserService')
 
 exports.getUsers = async (req,res,next) => {
     let sess = req.session
@@ -12,9 +12,9 @@ exports.getUsers = async (req,res,next) => {
     }
 }
 
-exports.addUser = async (req,res,next) => {
+exports.addUserHistory = async (req,res,next) => {
     try {
-        const result = await UserService.addUser(req,res,next)
+        const result = await UserService.addUserHistory(req,res,next)
         if(result) return res.redirect("/user_game/dashboard");
     } catch (e) {
         return res.status(400).json({ status: 400, message: e.message });
@@ -61,6 +61,162 @@ exports.loginAdmin = async (req,res,next) => {
     try {
         return await UserService.loginAdmin(req,res)
         //return res.status(200).json({ status: 200, data: users, message: "Succesfully Users Retrieved" });
+    } catch (e) {
+        return res.status(400).json({ status: 400, message: e.message });
+    }
+}
+
+//User Game
+exports.getUserGame = async (req,res,next) => {
+    let sess = req.session
+    try {
+        await UserService.getUserGame().then((user_game) => {
+            res.render("pages/admin/user_game_dashboard", { user_game: user_game, user : sess });
+        });
+        //return res.status(200).json({ status: 200, data: users, message: "Succesfully Users Retrieved" });
+    } catch (e) {
+        return res.status(400).json({ status: 400, message: e.message });
+    }
+}
+exports.addUserGame = async (req,res,next) => {
+    try {
+        const result = await UserService.addUserGame(req,res,next)
+        if(result) return res.redirect("/user_game/user-game");
+    } catch (e) {
+        return res.status(400).json({ status: 400, message: e.message });
+    }
+}
+
+exports.getUserGameById = async (req,res,next) => {
+    try {
+        sess = req.session;
+        const user_game = await UserService.getUserGameById(req,res,next)
+        if(user_game) return res.render("pages/admin/edit_user_game", { user_game: user_game, user : sess });
+    } catch (e) {
+        return res.status(400).json({ status: 400, message: e.message });
+    }
+}
+
+exports.updateUserGame = async (req,res,next) => {
+    try {
+        const user_game = await UserService.updateUserGame(req,res,next)
+        if(user_game) return res.json({status : 200, message: "success"})
+    } catch (e) {
+        return res.status(400).json({ status: 400, message: e.message });
+    }
+}
+
+exports.deleteUserGame = async(req,res,next)=>{
+    try {
+        const user_game = await UserService.deleteUserGame(req,res,next)
+        if(user_game) return res.json({status : 200, message: "success"})
+    } catch (e) {
+        return res.status(400).json({ status: 400, message: e.message });
+    }
+}
+
+//User Game Biodata
+exports.getUserBio = async (req,res,next) => {
+    let sess = req.session
+    try {
+        let users = await UserService.getUserGameForBio()
+        let bio = await UserService.getUserBio()
+        return res.render("pages/admin/user_game_bio", { users:users, bio: bio, user : sess });
+        
+        //return res.status(200).json({ status: 200, data: users, message: "Succesfully Users Retrieved" });
+    } catch (e) {
+        return res.status(400).json({ status: 400, message: e.message });
+    }
+}
+exports.addUserBio = async (req,res,next) => {
+    //console.log(req.body,req.file)
+    try {
+        const result = await UserService.addUserBio(req,res,next)
+        if(result) return res.redirect("/user_game/biodata");
+    } catch (e) {
+        return res.status(400).json({ status: 400, message: e.message });
+    }
+}
+
+exports.getUserBioById = async (req,res,next) => {
+    try {
+        sess = req.session;
+        const bio = await UserService.getUserBioById(req,res,next)
+        if(bio) return res.render("pages/admin/edit_user_bio", { bio: bio, user : sess });
+    } catch (e) {
+        return res.status(400).json({ status: 400, message: e.message });
+    }
+}
+
+exports.updateUserBio = async (req,res,next) => {
+    try {
+        if(req.file === undefined ) {
+            const img = await UserService.getImageName(req,res,next)
+            req.body.filename = img[0].images
+        }else{
+            req.body.filename = req.file.filename
+        }
+        const bio = await UserService.updateUserBio(req,res,next)
+        if(bio) return res.json({status : 200, message: "success"})
+    } catch (e) {
+        return res.status(400).json({ status: 400, message: e.message });
+    }
+}
+
+exports.deleteUserBio = async(req,res,next)=>{
+    try {
+        const bio = await UserService.deleteUserBio(req,res,next)
+        if(bio) return res.json({status : 200, message: "success"})
+    } catch (e) {
+        return res.status(400).json({ status: 400, message: e.message });
+    }
+}
+
+//User Game History
+exports.getUserHistory = async (req,res,next) => {
+    let sess = req.session
+    try {
+        let users = await UserService.getUserGame()
+        await UserService.getUserHistory().then((history) => {
+            res.render("pages/admin/user_game_history", { users:users, history: history, user : sess });
+        });
+        //return res.status(200).json({ status: 200, data: users, message: "Succesfully Users Retrieved" });
+    } catch (e) {
+        return res.status(400).json({ status: 400, message: e.message });
+    }
+}
+exports.addUserHistory = async (req,res,next) => {
+    try {
+        const result = await UserService.addUserHistory(req,res,next)
+        if(result) return res.redirect("/user_game/history");
+    } catch (e) {
+        return res.status(400).json({ status: 400, message: e.message });
+    }
+}
+
+exports.getUserHistoryById = async (req,res,next) => {
+    try {
+        sess = req.session;
+        const history = await UserService.getUserHistoryById(req,res,next)
+        if(history) return res.render("pages/admin/edit_user_history", { history: history, user : sess });
+    } catch (e) {
+        return res.status(400).json({ status: 400, message: e.message });
+    }
+}
+
+exports.updateUserHistory = async (req,res,next) => {
+    try {
+        const history = await UserService.updateUserHistory(req,res,next)
+        if(history) return res.json({status : 200, message: "success"})
+    } catch (e) {
+        return res.status(400).json({ status: 400, message: e.message });
+    }
+}
+
+exports.deleteUserHistory = async(req,res,next)=>{
+    try {
+        const history = await UserService.deleteUserHistory(req,res,next)
+        if(history) return res.json({status : 200, message: "success"})
     } catch (e) {
         return res.status(400).json({ status: 400, message: e.message });
     }

@@ -1,7 +1,17 @@
-const {Article, User_admin} = require('../models')
+const {Article, User_admin, User_game, User_game_history,User_game_biodata, sequelize} = require('../models')
 const md5 = require("md5");
 const fs = require("fs");
 let users = require("../user.json");
+
+User_game.hasMany(User_game_history,{
+    foreignKey : 'id'
+});
+User_game.hasOne(User_game_biodata,{
+    foreignKey : 'id'
+});
+User_game_history.belongsTo(User_game , {
+    foreignKey : 'user_id'
+});
 
 //Static from user.json
 exports.registerData = async (req,res,next) => {
@@ -152,7 +162,7 @@ exports.loginAdmin = async (req,res) => {
     }
 }
 
-exports.addUser = async(req,res,next)=>{
+exports.addUserHistory = async(req,res,next)=>{
     try {
         const result = await Article.create({
             title : req.body.player,
@@ -189,6 +199,220 @@ exports.updateUser = async(req,res,next)=>{
 exports.deleteUser = async(req,res,next)=>{
     try {
         return Article.destroy({
+            where : {id : req.params.id}
+        })
+    } catch (error) {
+        return res.status(400).send('Error in deleting a record');
+    }
+}
+
+//User_Game
+exports.addUserGame = async(req,res,next)=>{
+    console.log(req.body);
+    try {
+        const result = await User_game.create({
+            username : req.body.username,
+            password : md5(req.body.password),
+        })
+        return {success : true, result: result}
+    } catch (error) {
+        return res.status(400).send('Error in insert new record');
+    }
+}
+
+exports.getUserGame = async function (req,res) {
+    try {
+        const users = await User_game.findAll()
+        return users;
+    } catch (e) {
+        // Log Errors
+        throw Error(e)
+    }
+}
+
+exports.getUserGameForBio = async function (req,res) {
+    try {
+        const users = await User_game.findAll({
+            where: sequelize.literal(`id not in(SELECT user_id from "User_game_biodata")`),
+        })
+        return users;
+    } catch (e) {
+        // Log Errors
+        throw Error(e)
+    }
+}
+
+exports.getUserGameById = async(req,res,next)=>{
+    try {
+        sess = req.session;
+        const result = await User_game.findByPk(req.params.id)
+        return result
+    } catch (error) {
+        return res.status(400).send('Error in find user');
+    }
+}
+
+exports.updateUserGame = async(req,res,next)=>{
+    try {
+        return await User_game.update({
+            username : req.body.username,
+            password : md5(req.body.password),
+        },{where: {id : req.body.user_id}})
+        
+    } catch (error) {
+        return res.status(400).send('Error in updating a record');
+    }
+}
+
+exports.deleteUserGame = async(req,res,next)=>{
+    try {
+        return User_game.destroy({
+            where : {id : req.params.id}
+        })
+    } catch (error) {
+        return res.status(400).send('Error in deleting a record');
+    }
+}
+
+//User Game Biodata
+exports.addUserBio = async(req,res,next)=>{
+    console.log(req.file.filename)
+    try {
+        const result = await User_game_biodata.create({
+            full_name : req.body.fullname,
+            user_id : req.body.user_id,
+            age : req.body.age,
+            country : req.body.country,
+            images : req.file.filename,
+            date_of_birth : req.body.dob,
+            gender : req.body.gender,
+        })
+        return {success : true, result: result}
+    } catch (error) {
+        return res.status(400).send('Error in insert new record');
+    }
+}
+
+exports.getUserBio = async function (req,res) {
+
+    try {
+        const users = await User_game_biodata.findAll({order:[['id','asc']]})
+        return users;
+    } catch (e) {
+        // Log Errors
+        throw Error(e)
+    }
+}
+
+exports.getUserBioById = async(req,res,next)=>{
+    try {
+        sess = req.session;
+        const result = await User_game_biodata.findByPk(req.params.id)
+        return result
+    } catch (error) {
+        return res.status(400).send('Error in finding a record');
+    }
+}
+
+exports.updateUserBio = async(req,res,next)=>{
+    //console.log(req.body, req.file)
+    try {
+        return await User_game_biodata.update({
+            full_name : req.body.fullname,
+            age : req.body.age,
+            country : req.body.country,
+            images : req.body.filename,
+            date_of_birth : req.body.dob,
+            gender : req.body.gender,
+        },{where: {id : req.body.bio_id}})
+        
+    } catch (error) {
+        return res.status(400).send('Error in updating a record');
+    }
+}
+
+exports.deleteUserBio = async(req,res,next)=>{
+    try {
+        return User_game_biodata.destroy({
+            where : {id : req.params.id}
+        })
+    } catch (error) {
+        return res.status(400).send('Error in deleting a record');
+    }
+}
+
+exports.getImageName = async(req,res,next)=>{
+    //console.log(req.body.bio_id)
+    try {
+        return await User_game_biodata.findAll({
+            attributes: ['images'],
+            where : {id : req.body.bio_id}
+        })
+    } catch (error) {
+        return res.status(400).send('Error in deleting a record');
+    }
+}
+
+//User Game History
+exports.addUserHistory = async(req,res,next)=>{
+    try {
+        const result = await User_game_history.create({
+            user_id : req.body.user_id,
+            score : req.body.score,
+            time : req.body.time,
+            stage : req.body.stage,
+        })
+        return {success : true, result: result}
+    } catch (error) {
+        return res.status(400).send('Error in insert new record');
+    }
+}
+
+exports.getUserHistory = async function (req,res) {
+
+    try {
+        const users = await User_game_history.findAll({
+            attributes : ['id','stage','score','time'],
+            include : {
+                model : User_game,
+                attributes : ['username']
+            },
+            order:[['id','asc']]
+        })
+        return users;
+    } catch (e) {
+        // Log Errors
+        throw Error(e)
+    }
+}
+
+exports.getUserHistoryById = async(req,res,next)=>{
+    try {
+        sess = req.session;
+        const result = await User_game_history.findByPk(req.params.id)
+        return result
+    } catch (error) {
+        return res.status(400).send('Error in finding a record');
+    }
+}
+
+exports.updateUserHistory = async(req,res,next)=>{
+    //console.log(req.body, req.file)
+    try {
+        return await User_game_history.update({
+            score : req.body.score,
+            time : req.body.time,
+            stage : req.body.gender,
+        },{where: {id : req.body.history_id}})
+        
+    } catch (error) {
+        return res.status(400).send('Error in updating a record');
+    }
+}
+
+exports.deleteUserHistory = async(req,res,next)=>{
+    try {
+        return User_game_history.destroy({
             where : {id : req.params.id}
         })
     } catch (error) {

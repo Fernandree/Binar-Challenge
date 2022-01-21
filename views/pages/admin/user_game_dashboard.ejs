@@ -1,0 +1,78 @@
+<%- include('../../includes/navbar-admin.ejs',{page: 'users'}); %>
+<div class="row" style="margin: 0px !important; padding-top: 50px">
+    <div class="col-md-12">
+        <h4 align="center">Kategori</h4>
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">Tambah</button>
+        <br />
+        <br />
+        <table class="table" id="tabel_kategori">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Username</th>
+                    <th>Join Date</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% var monthNames = ["Jan", "Feb", "Mar", "Apr", "May","Jun","Jul", "Aug", "Sep", "Oct", "Nov","Dec"]; %> <% var no = 1; for(var i = 0; i < user_game.length; i++){ %>
+                <tr>
+                    <th scope="row"><%= no++ %></th>
+                    <td><%= user_game[i].username %></td>
+                    <td><%= user_game[i].createdAt.getDate() + " " + monthNames[user_game[i].createdAt.getMonth()] +" "+ user_game[i].createdAt.getFullYear() %></td>
+                    <td>
+                        <a href="/user_game/user-game/<%= user_game[i].id %>"><i class="fa fa-pencil-square-o"></i></a>
+                        <a href="#" onclick="deleteData('<%= user_game[i].id %>')"><i class="fa fa-trash"></i></a>
+                    </td>
+                </tr>
+                <% } %>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Add New Player Record</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="/user_game/user-game" method="post">
+                    <div class="form-group">
+                        <label for="username" class="col-form-label">Username</label>
+                        <input type="email" class="form-control" id="username" name="username" />
+                    </div>
+                    <div class="form-group">
+                        <label for="password" class="col-form-label">Password</label>
+                        <input type="password" class="form-control" id="password" name="password" />
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Add</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function deleteData(id) {
+        if (confirm("Are you sure want to delete this user?") == true) {
+            $.ajax({
+                url: "/user_game/user-game/" + id,
+                type: "DELETE",
+                contentType: "application/json; charset=utf-8", // this
+                dataType: "json", // and this
+                success: function (result) {
+                    //console.log(result);
+                    window.location.href = "http://localhost:3000/user_game/user-game";
+                },
+            });
+        }
+    }
+</script>

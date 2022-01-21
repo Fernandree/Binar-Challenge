@@ -1,0 +1,72 @@
+<div class="modal-header">
+    <h5 class="modal-title" id="exampleModalLabel">Edit Player Record</h5>
+</div>
+<div class="modal-body">
+    <form action="/user_game/user-game" method="POST" id="editBio" enctype="multipart/form-data">
+        <input type="hidden" value="<%= bio.user_id %>" id="user_id" name="user_id"/>
+        <div class="form-group">
+            <label for="images">Upload New Avatar</label>
+            <input type="file" class="form-control-file" id="newImages" name="newImages" value=""/>
+            <!-- <input type="file" class="form-control-file" id="oldImages" name="oldImages" value=""/> -->
+        </div>
+        <div class="form-group">
+            <label for="fullname" class="col-form-label">Fullname</label>
+            <input type="text" class="form-control" id="fullname" name="fullname" value="<%= bio.full_name %>" required/>
+        </div>
+        <div class="form-group">
+            <label for="age" class="col-form-label">Age</label>
+            <input type="text" class="form-control" id="age" name="age" value="<%= bio.age %>" required/>
+        </div>
+        <div class="form-group">
+            <label for="gender">Gender</label>
+            <select class="form-control" id="gender" name="gender">
+                <option value="male" <%= bio.gender=='male' ? 'selected' : ''  %>>Male</option>
+                <option value="female" <%= bio.gender=='female' ? 'selected' : '' %>>Female</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="dob" class="col-form-label">Date of Birth</label>
+            <input type="date" class="form-control" id="dob" name="dob" value="<%= bio.date_of_birth %>" required/>
+        </div>
+        <div class="form-group">
+            <label for="country" class="col-form-label">Country</label>
+            <input type="text" class="form-control" id="country" name="country" value="<%= bio.country %>" required/>
+        </div>
+        <input type="hidden" value="<%= bio.id %>" id="bio_id" name="bio_id"/>
+        <div class="modal-footer" style="border-top: 0px !important">
+            <a href="/user_game/biodata" class="btn btn-secondary">Back</a>
+            <button type="button" class="btn btn-primary" onclick="updateData()">Edit</button>
+        </div>
+    </form>
+</div>
+
+<script>
+    function updateData() {
+        var formData = new FormData()
+
+        $("input").each(function(){
+            var input = $(this) 
+            if(input.attr('type')=="file"){ 
+                formData.append(input.attr("name"), input[0].files[0]); 
+            }else{
+                formData.append(input.attr("name"), input.val()); 
+            }      
+        })
+        
+        $.ajax({
+            url: "/user_game/biodata",
+            type: "PUT",
+            processData: false,
+            contentType: false,
+            data: formData,
+            
+            success: function (result) {
+                console.log(result);
+                window.location.href = "http://localhost:3000/user_game/biodata";
+            },
+            error : function(error){
+                console.log(error)
+            }
+        });
+    }
+</script>

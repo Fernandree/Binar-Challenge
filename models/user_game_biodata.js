@@ -19,7 +19,8 @@ module.exports = (sequelize, DataTypes) => {
     age: DataTypes.INTEGER,
     gender: DataTypes.ENUM('male', 'female'),
     date_of_birth: DataTypes.DATEONLY,
-    country: DataTypes.STRING
+    country: DataTypes.STRING,
+    images: DataTypes.STRING,
   }, {
     sequelize,
     modelName: 'User_game_biodata',
