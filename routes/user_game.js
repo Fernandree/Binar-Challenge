@@ -20,11 +20,11 @@ const upload = multer({ storage: storage })
 
 
 //Articles
-router.get("/dashboard", auth.isAuthorized, UserController.getUsers);
-router.post("/add", auth.isAuthorized, UserController.addUserHistory)
-router.get("/edit_user/:id", auth.isAuthorized, UserController.getUserById);
-router.post("/update", auth.isAuthorized, UserController.updateUser)
-router.get("/delete/:id", auth.isAuthorized, UserController.deleteUser)
+router.get("/article", auth.isAuthorized, UserController.getArticles);
+router.post("/article", auth.isAuthorized, UserController.addArticle)
+router.get("/article/:id", auth.isAuthorized, UserController.getArticleById);
+router.put("/article", auth.isAuthorized, UserController.updateArticle)
+router.delete("/article/:id", auth.isAuthorized, UserController.deleteArticle)
 
 //User Game
 router.get("/user-game", auth.isAuthorized, UserController.getUserGame);
@@ -44,7 +44,7 @@ router.delete("/biodata/:id", auth.isAuthorized, UserController.deleteUserBio)
 router.get("/history", auth.isAuthorized, UserController.getUserHistory);
 router.post("/history",auth.isAuthorized, UserController.addUserHistory);
 router.get("/history/:id", auth.isAuthorized, UserController.getUserHistoryById);
-router.put("/history",auth.isAuthorized, UserController.updateUserHistory)
+router.put("/history", auth.isAuthorized, UserController.updateUserHistory)
 router.delete("/history/:id", auth.isAuthorized, UserController.deleteUserHistory)
 
 module.exports = router;

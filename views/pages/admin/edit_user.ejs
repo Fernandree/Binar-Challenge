@@ -2,22 +2,19 @@
     <h5 class="modal-title" id="exampleModalLabel">Edit Player Record</h5>
 </div>
 <div class="modal-body">
-    <form action="/user_game/update" method="post">
+    <form action="/user_game/article" method="post" enctype="application/x-www-form-urlencoded">
         <div class="form-group">
-            <label for="player" class="col-form-label">Player</label>
-            <input type="text" class="form-control" id="player" name="player" value="<%= article.title %>" />
+            <label for="title" class="col-form-label">Title</label>
+            <input type="text" class="form-control" id="title" name="title" value="<%= article.title %>" />
         </div>
         <div class="form-group">
-            <label for="score" class="col-form-label">Score</label>
-            <input type="text" class="form-control" id="score" name="score" value="<%= article.body %>" />
-        </div>
-        <div class="form-group">
-            <label for="record" class="col-form-label">Record</label>
-            <input type="text" class="form-control" id="record" name="record" />
+            <label for="body" class="col-form-label">Body</label>
+            <input type="text" class="form-control" id="body" name="body" value="<%= article.body %>" />
         </div>
         <input type="hidden" name="id" value="<%= article.id %>" />
+        <input type="hidden" name="_method" value="PUT" />
         <div class="modal-footer" style="border-top: 0px !important">
-            <a href="/user_game/dashboard" class="btn btn-secondary">Back</a>
+            <a href="/user_game/article" class="btn btn-secondary">Back</a>
             <button type="submit" class="btn btn-primary">Edit</button>
         </div>
     </form>

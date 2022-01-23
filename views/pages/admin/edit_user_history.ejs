@@ -15,36 +15,37 @@
             <label for="time" class="col-form-label">Time (in seconds)</label>
             <input type="text" class="form-control" id="time" name="time" value="<%= history.time %>" />
         </div>
-        <input type="hidden" value="<%= history.id %>" id="history_id" />
+        <input type="hidden" value="<%= history.id %>" id="history_id" name="history_id" />
+        <input type="hidden" name="_method" value="PUT" />
         <div class="modal-footer" style="border-top: 0px !important">
             <a href="/user_game/history" class="btn btn-secondary">Back</a>
-            <button type="button" class="btn btn-primary" onclick="updateData()">Edit</button>
+            <button type="submit" class="btn btn-primary">Edit</button>
         </div>
     </form>
 </div>
 
 <script>
-    function updateData() {
-        var formData = new FormData();
+    // function updateData() {
+    //     var formData = new FormData();
 
-        $("input").each(function () {
-            var input = $(this);
-            if (input.attr("type") == "file") {
-                formData.append(input.attr("name"), input[0].files[0]);
-            } else {
-                formData.append(input.attr("name"), input.val());
-            }
-        });
-        $.ajax({
-            url: "/user_game/history",
-            type: "PUT",
-            processData: false,
-            contentType: false,
-            data: formData,
-            success: function (result) {
-                console.log(result);
-                window.location.href = "http://localhost:3000/user_game/history";
-            },
-        });
-    }
+    //     $("input").each(function () {
+    //         var input = $(this);
+    //         if (input.attr("type") == "file") {
+    //             formData.append(input.attr("name"), input[0].files[0]);
+    //         } else {
+    //             formData.append(input.attr("name"), input.val());
+    //         }
+    //     });
+    //     $.ajax({
+    //         url: "/user_game/history",
+    //         type: "PUT",
+    //         processData: false,
+    //         contentType: false,
+    //         data: formData,
+    //         success: function (result) {
+    //             console.log(result);
+    //             window.location.href = "http://localhost:3000/user_game/history";
+    //         },
+    //     });
+    // }
 </script>

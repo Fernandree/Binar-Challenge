@@ -9,9 +9,9 @@
             <thead>
                 <tr>
                     <th>#</th>
-                    <th>Player</th>
-                    <th>Score</th>
-                    <th>Records</th>
+                    <th>Title</th>
+                    <th>Body</th>
+                    <th>Created At</th>
                     <th>Action</th>
                 </tr>
             </thead>
@@ -23,8 +23,11 @@
                     <td><%= article[i].body %></td>
                     <td><%= article[i].createdAt.getDate() + " " + monthNames[article[i].createdAt.getMonth()] +" "+ article[i].createdAt.getFullYear() %></td>
                     <td>
-                        <a href="/user_game/edit_user/<%= article[i].id %>"><i class="fa fa-pencil-square-o"></i></a>
-                        <a href="/user_game/delete/<%= article[i].id %>" onclick='return confirm("Apa kamu yakin akan menghapus data ini?")'><i class="fa fa-trash"></i></a>
+                        <a href="/user_game/article/<%= article[i].id %>"><i class="fa fa-pencil-square-o"></i></a>
+                        <form method="post" action="/user_game/article/<%= article[i].id %>" style="display: inline; vertical-align: text-bottom">
+                            <a href="#" onclick="confirmDelete(this)"><i class="fa fa-trash"></i> </a>
+                            <input type="hidden" name="_method" value="DELETE" />
+                        </form>
                     </td>
                 </tr>
                 <% } %>
@@ -43,18 +46,14 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form action="/user_game/add" method="post">
+                <form action="/user_game/article" method="post">
                     <div class="form-group">
-                        <label for="player" class="col-form-label">Player</label>
-                        <input type="text" class="form-control" id="player" name="player" />
+                        <label for="title" class="col-form-label">Title</label>
+                        <input type="text" class="form-control" id="title" name="title" />
                     </div>
                     <div class="form-group">
-                        <label for="score" class="col-form-label">Score</label>
-                        <input type="text" class="form-control" id="score" name="score" />
-                    </div>
-                    <div class="form-group">
-                        <label for="record" class="col-form-label">Record</label>
-                        <input type="text" class="form-control" id="record" name="record" />
+                        <label for="body" class="col-form-label">Body</label>
+                        <input type="text" class="form-control" id="body" name="body" />
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -65,3 +64,11 @@
         </div>
     </div>
 </div>
+
+<script>
+    function confirmDelete(id) {
+        if (confirm("Are you sure want to delete this data?")) {
+            $(id).closest("form").submit();
+        }
+    }
+</script>

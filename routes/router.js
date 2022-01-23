@@ -1,6 +1,5 @@
 const express = require("express");
 const router = express.Router()
-const auth = require("../auth")
 const UserController = require('../controller/UserController')
 
 router.get('/logout',(req,res) => {
@@ -8,7 +7,7 @@ router.get('/logout',(req,res) => {
     res.redirect('/login');
 });
 
-router.get("/",auth.isAuthorized, (req,res,next) => { 
+router.get("/", (req,res,next) => { 
     res.locals.route = 'index'
     next()
     }, UserController.renderHTML

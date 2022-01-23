@@ -9,6 +9,7 @@ const user_game = require("./routes/user_game");
 const expressLayouts = require("express-ejs-layouts");
 const session = require('express-session');
 const oneDay = 1000 * 60 * 60 * 24;
+const methodOverride = require('method-override')
 
 app.use(expressLayouts);
 app.set("layout", "./layout/layout");
@@ -17,6 +18,15 @@ app.use(express.static(path.join(__dirname, "public")));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+app.use(methodOverride(function (req, res) {
+    if (req.body && typeof req.body === 'object' && '_method' in req.body) {
+      // look in urlencoded POST bodies and delete it
+      var method = req.body._method
+      delete req.body._method
+      return method
+    }
+  }))
 
 app.use(session({
     secret: "thisismysecrctekeyfhrgfgrfrty84fwir767",

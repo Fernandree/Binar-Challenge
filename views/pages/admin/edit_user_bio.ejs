@@ -2,7 +2,7 @@
     <h5 class="modal-title" id="exampleModalLabel">Edit Player Record</h5>
 </div>
 <div class="modal-body">
-    <form action="/user_game/user-game" method="POST" id="editBio" enctype="multipart/form-data">
+    <form action="/user_game/biodata" method="POST" id="editBio" enctype="application/x-www-form-urlencoded">
         <input type="hidden" value="<%= bio.user_id %>" id="user_id" name="user_id"/>
         <div class="form-group">
             <label for="images">Upload New Avatar</label>
@@ -33,40 +33,41 @@
             <input type="text" class="form-control" id="country" name="country" value="<%= bio.country %>" required/>
         </div>
         <input type="hidden" value="<%= bio.id %>" id="bio_id" name="bio_id"/>
+        <input type="hidden" name="_method" value="PUT" />
         <div class="modal-footer" style="border-top: 0px !important">
             <a href="/user_game/biodata" class="btn btn-secondary">Back</a>
-            <button type="button" class="btn btn-primary" onclick="updateData()">Edit</button>
+            <button type="submit" class="btn btn-primary">Edit</button>
         </div>
     </form>
 </div>
 
 <script>
-    function updateData() {
-        var formData = new FormData()
+    // function updateData() {
+    //     var formData = new FormData()
 
-        $("input").each(function(){
-            var input = $(this) 
-            if(input.attr('type')=="file"){ 
-                formData.append(input.attr("name"), input[0].files[0]); 
-            }else{
-                formData.append(input.attr("name"), input.val()); 
-            }      
-        })
+    //     $("input").each(function(){
+    //         var input = $(this) 
+    //         if(input.attr('type')=="file"){ 
+    //             formData.append(input.attr("name"), input[0].files[0]); 
+    //         }else{
+    //             formData.append(input.attr("name"), input.val()); 
+    //         }      
+    //     })
         
-        $.ajax({
-            url: "/user_game/biodata",
-            type: "PUT",
-            processData: false,
-            contentType: false,
-            data: formData,
+    //     $.ajax({
+    //         url: "/user_game/biodata",
+    //         type: "PUT",
+    //         processData: false,
+    //         contentType: false,
+    //         data: formData,
             
-            success: function (result) {
-                console.log(result);
-                window.location.href = "http://localhost:3000/user_game/biodata";
-            },
-            error : function(error){
-                console.log(error)
-            }
-        });
-    }
+    //         success: function (result) {
+    //             console.log(result);
+    //             window.location.href = "http://localhost:3000/user_game/biodata";
+    //         },
+    //         error : function(error){
+    //             console.log(error)
+    //         }
+    //     });
+    // }
 </script>

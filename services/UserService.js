@@ -7,7 +7,7 @@ User_game.hasMany(User_game_history,{
     foreignKey : 'id'
 });
 User_game.hasOne(User_game_biodata,{
-    foreignKey : 'id'
+    foreignKey : 'user_id'
 });
 User_game_history.belongsTo(User_game , {
     foreignKey : 'user_id'
@@ -118,7 +118,7 @@ exports.deleteData = async(req,res,next)=>{
 }
 
 // Using DB
-exports.getUsers = async function (req,res) {
+exports.getArticles = async function (req,res) {
 
     try {
         const users = await Article.findAll()
@@ -151,7 +151,7 @@ exports.loginAdmin = async (req,res) => {
                     res.redirect("back");
                 } else {
                     req.session.userId = user.id
-                    res.redirect("user_game/dashboard");
+                    res.redirect("user_game/article");
                 }
             })
             .catch(() => {
@@ -162,11 +162,11 @@ exports.loginAdmin = async (req,res) => {
     }
 }
 
-exports.addUserHistory = async(req,res,next)=>{
+exports.addArticle = async(req,res,next)=>{
     try {
         const result = await Article.create({
-            title : req.body.player,
-            body : req.body.score,
+            title : req.body.title,
+            body : req.body.body,
         })
         return {success : true, result: result}
     } catch (error) {
@@ -174,7 +174,7 @@ exports.addUserHistory = async(req,res,next)=>{
     }
 }
 
-exports.getUserById = async(req,res,next)=>{
+exports.getArticleById = async(req,res,next)=>{
     try {
         sess = req.session;
         const result = await Article.findByPk(req.params.id)
@@ -184,11 +184,11 @@ exports.getUserById = async(req,res,next)=>{
     }
 }
 
-exports.updateUser = async(req,res,next)=>{
+exports.updateArticle = async(req,res,next)=>{
     try {
         return await Article.update({
-            title : req.body.player,
-            body : req.body.score,
+            title : req.body.title,
+            body : req.body.body,
         },{where: {id : req.body.id}})
         
     } catch (error) {
@@ -196,7 +196,7 @@ exports.updateUser = async(req,res,next)=>{
     }
 }
 
-exports.deleteUser = async(req,res,next)=>{
+exports.deleteArticle = async(req,res,next)=>{
     try {
         return Article.destroy({
             where : {id : req.params.id}
@@ -253,14 +253,15 @@ exports.getUserGameById = async(req,res,next)=>{
 }
 
 exports.updateUserGame = async(req,res,next)=>{
+    //console.log(req.body)
     try {
         return await User_game.update({
             username : req.body.username,
             password : md5(req.body.password),
-        },{where: {id : req.body.user_id}})
+        },{where: {id : req.body.id}})
         
     } catch (error) {
-        return res.status(400).send('Error in updating a record');
+        return res.status(400).send(error.message);
     }
 }
 
@@ -375,7 +376,11 @@ exports.getUserHistory = async function (req,res) {
             attributes : ['id','stage','score','time'],
             include : {
                 model : User_game,
-                attributes : ['username']
+                attributes : ['id'],
+                include : {
+                    model : User_game_biodata,
+                    attributes : ['full_name']
+                },
             },
             order:[['id','asc']]
         })
@@ -397,7 +402,7 @@ exports.getUserHistoryById = async(req,res,next)=>{
 }
 
 exports.updateUserHistory = async(req,res,next)=>{
-    //console.log(req.body, req.file)
+    console.log(req.body)
     try {
         return await User_game_history.update({
             score : req.body.score,

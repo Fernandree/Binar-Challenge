@@ -11,37 +11,38 @@
             <label for="password" class="col-form-label">New Password</label>
             <input type="password" class="form-control" id="password" name="password" value="" />
         </div>
-        <input type="hidden" value="<%= user_game.id %>" id="user_id" />
+        <input type="hidden" value="<%= user_game.id %>" id="id" name="id" />
+        <input type="hidden" name="_method" value="PUT" />
         <div class="modal-footer" style="border-top: 0px !important">
             <a href="/user_game/user-game" class="btn btn-secondary">Back</a>
-            <button type="button" class="btn btn-primary" onclick="updateData()">Edit</button>
+            <button type="submit" class="btn btn-primary">Edit</button>
         </div>
     </form>
 </div>
 
 <script>
-    var user_id;
-    var username;
-    var password;
+    // var user_id;
+    // var username;
+    // var password;
 
-    function updateData() {
-        user_id = document.getElementById("user_id").value;
-        username = document.getElementById("username").value;
-        password = document.getElementById("password").value;
-        $.ajax({
-            url: "/user_game/user-game",
-            type: "PUT",
-            contentType: "application/json; charset=utf-8", // this
-            dataType: "json", // and this
-            data: JSON.stringify({
-                user_id: user_id,
-                username: username,
-                password: password,
-            }),
-            success: function (result) {
-                console.log(result);
-                window.location.href = "http://localhost:3000/user_game/user-game";
-            },
-        });
-    }
+    // function updateData() {
+    //     user_id = document.getElementById("user_id").value;
+    //     username = document.getElementById("username").value;
+    //     password = document.getElementById("password").value;
+    //     $.ajax({
+    //         url: "/user_game/user-game",
+    //         type: "PUT",
+    //         contentType: "application/json; charset=utf-8", // this
+    //         dataType: "json", // and this
+    //         data: JSON.stringify({
+    //             user_id: user_id,
+    //             username: username,
+    //             password: password,
+    //         }),
+    //         success: function (result) {
+    //             console.log(result);
+    //             window.location.href = "http://localhost:3000/user_game/user-game";
+    //         },
+    //     });
+    // }
 </script>
