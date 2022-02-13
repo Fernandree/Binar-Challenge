@@ -18,33 +18,40 @@ const storage = multer.diskStorage(
     
 const upload = multer({ storage: storage })
 
+const passport = require("../lib/passport")
+router.use(passport.initialize())
 
+const restrict = require('../middlewares/restrict')
+router.get("/whoami", authenticateJWT, UserController.whoami);
 //Articles
-router.get("/article", auth.isAuthorized, UserController.getArticles);
-router.post("/article", auth.isAuthorized, UserController.addArticle)
-router.get("/article/:id", auth.isAuthorized, UserController.getArticleById);
-router.put("/article", auth.isAuthorized, UserController.updateArticle)
-router.delete("/article/:id", auth.isAuthorized, UserController.deleteArticle)
+router.get("/article", authenticateJWT, UserController.getArticles);
+router.post("/article", authenticateJWT, UserController.addArticle)
+router.get("/article/:id", authenticateJWT, UserController.getArticleById);
+router.put("/article", authenticateJWT, UserController.updateArticle)
+router.delete("/article/:id", authenticateJWT, UserController.deleteArticle)
 
 //User Game
-router.get("/user-game", auth.isAuthorized, UserController.getUserGame);
-router.post("/user-game", auth.isAuthorized, UserController.addUserGame);
-router.get("/user-game/:id", auth.isAuthorized, UserController.getUserGameById);
-router.put("/user-game", auth.isAuthorized, UserController.updateUserGame)
-router.delete("/user-game/:id", auth.isAuthorized, UserController.deleteUserGame)
+router.get("/user-game", UserController.getUserGame);
+router.post("/user-game", UserController.addUserGame);
+router.get("/user-game/:id", UserController.getUserGameById);
+router.put("/user-game", UserController.updateUserGame)
+router.delete("/user-game/:id", UserController.deleteUserGame)
 
 //User Biodata
-router.get("/biodata", auth.isAuthorized, UserController.getUserBio);
-router.post("/biodata", auth.isAuthorized, upload.single('images'), UserController.addUserBio);
-router.get("/biodata/:id", auth.isAuthorized, UserController.getUserBioById);
-router.put("/biodata", auth.isAuthorized, upload.single('newImages'), UserController.updateUserBio)
-router.delete("/biodata/:id", auth.isAuthorized, UserController.deleteUserBio)
+router.get("/biodata", UserController.getUserBio);
+router.post("/biodata", upload.single('images'), UserController.addUserBio);
+router.get("/biodata/:id", UserController.getUserBioById);
+router.put("/biodata", upload.single('newImages'), UserController.updateUserBio)
+router.delete("/biodata/:id", UserController.deleteUserBio)
 
 //User History
-router.get("/history", auth.isAuthorized, UserController.getUserHistory);
-router.post("/history",auth.isAuthorized, UserController.addUserHistory);
-router.get("/history/:id", auth.isAuthorized, UserController.getUserHistoryById);
-router.put("/history", auth.isAuthorized, UserController.updateUserHistory)
-router.delete("/history/:id", auth.isAuthorized, UserController.deleteUserHistory)
+router.get("/history", UserController.getUserHistory);
+router.post("/history", UserController.addUserHistory);
+router.get("/history/:id", UserController.getUserHistoryById);
+router.put("/history", UserController.updateUserHistory)
+router.delete("/history/:id", UserController.deleteUserHistory)
+
+
+
 
 module.exports = router;

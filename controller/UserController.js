@@ -66,6 +66,27 @@ exports.loginAdmin = async (req,res,next) => {
     }
 }
 
+exports.whoami = async(req,res,next)=>{
+    //res.render('pages/profile', req.user.dataValues)
+    const currentUser = req.user
+    res.json(currentUser)
+}
+
+exports.registerAdmin = async (req,res,next) => {
+    try {
+        const registered = await UserService.registerAdmin(req,res)
+        
+        if(registered){
+            res.redirect('/login')
+        }else{
+            res.send('Admin register failed')
+        }
+        //return res.status(200).json({ status: 200, data: users, message: "Succesfully Users Retrieved" });
+    } catch (e) {
+        return res.status(400).json({ status: 400, message: e.message });
+    }
+}
+
 //User Game
 exports.getUserGame = async (req,res,next) => {
     let sess = req.session

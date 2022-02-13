@@ -94,11 +94,12 @@ let p1 = document.getElementById('kertas_player');
 let p2 = document.getElementById('kertas_cpu');
 
 let result = document.getElementById('result');
+let btnRef = document.getElementById('button-refresh');
 
 let choose1 = "";
 let choose2 = "";
 
-document.getElementById('refresh').addEventListener('click', event =>{
+function refresh(){
     s1.classList.remove('active');
     sc1.classList.remove('active');
     p1.classList.remove('active');
@@ -109,9 +110,14 @@ document.getElementById('refresh').addEventListener('click', event =>{
 
     result.classList.remove('banner');
     result.innerHTML = '<h1 style="color:red"><b>VS</b></h1>'
+    btnRef.style.display = 'none';
 
     choose1 = "";
     choose2 = "";
+}
+
+document.getElementById('refresh').addEventListener('click', event =>{
+    refresh();
 });
 
 s1.addEventListener("click", event =>{
@@ -127,16 +133,6 @@ s1.addEventListener("click", event =>{
     }
 });
 
-// s2.addEventListener("click", event =>{
-//     if(!(p2.classList.contains('active')) && !(sc2.classList.contains('active'))){
-//         s2.classList.add('active');
-//         sc2.classList.remove('active');
-//         p2.classList.remove('active');
-//         choose2 = 'batu';
-//         check();
-//     }
-// });
-
 sc1.addEventListener("click", event =>{
     if(!(s1.classList.contains('active')) && !(p1.classList.contains('active'))){
         sc1.classList.add('active');
@@ -150,16 +146,6 @@ sc1.addEventListener("click", event =>{
         //alert(!(s1.classList.contains('active') + " " + !(p1.classList.contains('active'))));
     }
 });
-
-// sc2.addEventListener("click", event =>{
-//     if(!(s2.classList.contains('active')) && !(p2.classList.contains('active'))){
-//         sc2.classList.add('active');
-//         s2.classList.remove('active');
-//         p2.classList.remove('active');
-//         choose2 = 'gunting';
-//         check();
-//     }
-// });
 
 p1.addEventListener("click", event =>{
     if(!(s1.classList.contains('active')) && !(sc1.classList.contains('active'))){
@@ -175,16 +161,8 @@ p1.addEventListener("click", event =>{
     }
 });
 
-// p2.addEventListener("click", event =>{
-//     if(!(s2.classList.contains('active')) && !(sc2.classList.contains('active'))){
-//         p2.classList.add('active');
-//         sc2.classList.remove('active');
-//         s2.classList.remove('active');
-//         choose2 = 'kertas';
-//         check();
-//     }
-// });
-
+let round = 1;
+let score = 0;
 
 const check = () =>{
     let arr = ['batu','gunting','kertas'];
@@ -200,6 +178,7 @@ const check = () =>{
         document.getElementById('result').classList.add('banner');
         document.getElementById('result').innerHTML = '<h2 style="color:white"><b>Seri</b></h2>';
         stone_player.victory();
+        score++;
     }else if(choose1 == 'batu' && cpu == 'kertas'){
         p2.classList.add('active');
         console.log('Player 2 Menang!');
@@ -208,6 +187,7 @@ const check = () =>{
         s2.classList.add('active');
         console.log('Player 1 Menang!');
         paper_player.victory();
+        score++;
     }else if(choose1 == 'kertas' && cpu == 'kertas'){
         p2.classList.add('active');
         console.log('SERI');
@@ -224,6 +204,7 @@ const check = () =>{
         p2.classList.add('active');
         console.log('Player 1 Menang!');
         scissors_player.victory();
+        score++;
     }else if(choose1 == 'gunting' && cpu == 'gunting'){
         sc2.classList.add('active');
         console.log('SERI');
@@ -231,4 +212,31 @@ const check = () =>{
     }else{
         return 0;
     }
+
+    if(round < 3){
+        setTimeout(() => {
+            refresh();
+        }, 1500);
+        round++;
+    }else{
+        round = 1;      
+        $.ajax({
+            url: "/player/add-score",
+            type: "POST",
+            
+            data : {
+                "score": score,
+                "user_id": test,
+                "time": Math.floor(Math.random() * 10),
+                "stage": room_id,
+            },
+            success: function (result) {
+                console.log(result);
+                //window.location.href = "http://localhost:3000/user_game/history";
+            },
+        });
+        btnRef.style.display = '';
+        score = 0;
+    }
+
 }

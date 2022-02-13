@@ -1,0 +1,17 @@
+<%- include('../../includes/navbar.ejs', { page : 'home'}) %>
+
+<div class="bg container-fluid">
+    <div class="row">
+        <div class="col-md-12" style="margin-top: 12%">
+            <center>
+                <h1 class="h1-index">Welcome <%= username %></h1>
+                <br /><br />
+                <form action="/player/create-room" method="post">
+                    <input type="text" name="room_name" value="" placeholder="Input room name" /><br />
+                    <input type="hidden" name="user_id" value="<%= id %>" />
+                    <button type="submit" class="btn btn-warning btn-lg button-play" style="margin-top: 10px">Create Room</button>
+                </form>
+            </center>
+        </div>
+    </div>
+</div>

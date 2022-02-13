@@ -129,7 +129,35 @@ exports.getArticles = async function (req,res) {
     }
 }
 
+function format(user){
+    const {id,username} = user
+    return {
+        id,
+        username,
+        accessToken : user.generateToken()
+    }
+}
+
 exports.loginAdmin = async (req,res) => {
+    if (!req.body.username || !req.body.password) {
+        res.status(404).json({
+            message: "username and password are needed!",
+        });
+    } else {
+        User_admin.authenticate(req.body)
+            .then((user) => {
+                res.cookie('jwt',user)
+                res.redirect("/user_game/article");
+            })
+            .catch((error) => {
+                res.status(500).json({
+                    message: error,
+                });
+            });
+    }
+}
+
+exports.registerAdmin = async (req,res) => {
     if (!req.body.username || !req.body.password) {
         res.status(404).json({
             message: "username and password are needed!",
@@ -137,22 +165,10 @@ exports.loginAdmin = async (req,res) => {
     } else {
         const username = req.body.username;
         const password = req.body.password;
-        const admin = {
-            where: {
-                username,
-            },
-        };
-        User_admin.findOne(admin)
-            .then((user) => {
-                if (!user) {
-                    res.redirect("back");
-                } else if (user.password !== md5(password)) {
-                   
-                    res.redirect("back");
-                } else {
-                    req.session.userId = user.id
-                    res.redirect("user_game/article");
-                }
+        const input = {username,password}
+        return await User_admin.register(input)
+            .then(() => {
+                return 1
             })
             .catch(() => {
                 res.status(500).json({
@@ -376,11 +392,7 @@ exports.getUserHistory = async function (req,res) {
             attributes : ['id','stage','score','time'],
             include : {
                 model : User_game,
-                attributes : ['id'],
-                include : {
-                    model : User_game_biodata,
-                    attributes : ['full_name']
-                },
+                attributes : ['id','username'],
             },
             order:[['id','asc']]
         })

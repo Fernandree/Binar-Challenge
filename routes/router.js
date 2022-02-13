@@ -3,7 +3,7 @@ const router = express.Router()
 const UserController = require('../controller/UserController')
 
 router.get('/logout',(req,res) => {
-    req.session.destroy();
+    res.clearCookie("jwt");
     res.redirect('/login');
 });
 
@@ -49,8 +49,11 @@ router.get("/login",(req,res,next) => {
     }, UserController.renderHTML
 );
 
-
+const restrict = require('../middlewares/restrict')
+router.get("/whoami", restrict, UserController.whoami);
 router.post("/login_admin", UserController.loginAdmin);
+
+router.post("/register_admin", UserController.registerAdmin);
 
 router.get("/register",(req,res,next) => { 
     res.locals.route = 'register'

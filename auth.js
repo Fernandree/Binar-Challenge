@@ -1,17 +1,13 @@
-const { User_admin, User_game, Article } = require("./models");
+const jwt = require('jsonwebtoken');
+const accessTokenSecret = 'this is my secret, shuush';
 
-module.exports.isAuthorized  = function(req, res, next) {
-    User_admin.findByPk(req.session.userId).then(function (user) {
-        if (!user) {
-            
-            return res.render("pages/error/401")
-        } else {      
-            if (user === undefined) {
-                
-                return res.render("pages/error/401")
-            } else {
-                return next();
-            }
-        }
-    });
-}
+module.exports = authenticateJWT = (req, res, next) => {
+    //console.log(req.cookies['jwt'])
+    if(req.cookies['jwt']){
+        const claims = jwt.verify(req.cookies['jwt'], accessTokenSecret)
+        req.user = claims
+        next()
+    }else{
+        res.redirect('/player/login')
+    }
+};
